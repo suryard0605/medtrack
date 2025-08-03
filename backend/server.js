@@ -9,7 +9,14 @@ const userRoutes = require("./routes/users"); // ✅ our fixed users route
 const medicineLogsRoutes = require("./routes/medicineLogs");
 const app = express();
 
-app.use(cors({ origin: "http://localhost:5173" }));
+app.use(cors({
+  origin: [
+    "http://localhost:5173", // for local dev
+    "https://medtrack-iota.vercel.app" // for production
+  ],
+  credentials: true
+}));
+
 app.use(express.json());
 
 app.use("/api/medicines", medicineRoutes);
