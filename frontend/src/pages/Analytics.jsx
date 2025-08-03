@@ -18,7 +18,7 @@ export default function Analytics({ user }) {
   useEffect(() => {
     if (user) {
       // Get user's display name from the backend
-      fetch(`http://localhost:5000/api/users/${user.uid}`)
+      fetch(`${import.meta.env.VITE_API_URL}/api/users/${user.uid}`)
         .then((res) => res.json())
         .then((data) => {
           setDisplayName(data?.name || user.email);
@@ -32,7 +32,7 @@ export default function Analytics({ user }) {
   const fetchAnalytics = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`http://localhost:5000/api/medicine-logs/analytics/${user.uid}?days=${dateRange}`);
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/medicine-logs/analytics/${user.uid}?days=${dateRange}`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -58,7 +58,7 @@ export default function Analytics({ user }) {
       const trendsData = {};
       for (const memberData of updatedData) {
         try {
-          const trendsResponse = await fetch(`http://localhost:5000/api/medicine-logs/trends/${memberData.member.id}?days=${dateRange}&userId=${user.uid}`);
+          const trendsResponse = await fetch(`${import.meta.env.VITE_API_URL}/api/medicine-logs/trends/${memberData.member.id}?days=${dateRange}&userId=${user.uid}`);
           if (trendsResponse.ok) {
             const memberTrends = await trendsResponse.json();
             trendsData[memberData.member.id] = memberTrends;

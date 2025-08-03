@@ -88,7 +88,7 @@ export default function Dashboard({ user }) {
   // Fetch user's name
   useEffect(() => {
     if (!user) return;
-    fetch(`http://localhost:5000/api/users/${user.uid}`)
+    fetch(`${import.meta.env.VITE_API_URL}/api/users/${user.uid}`)
       .then((res) => res.json())
       .then((data) => {
         setMainUser(data);
@@ -103,7 +103,7 @@ export default function Dashboard({ user }) {
   const fetchMembers = async () => {
     if (!user) return;
     try {
-      const res = await fetch(`http://localhost:5000/api/members/${user.uid}`);
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/members/${user.uid}`);
       const data = await res.json();
       setMembers(data);
       // Default to 'main' (Users tab) instead of first member
@@ -121,7 +121,7 @@ export default function Dashboard({ user }) {
   useEffect(() => {
     if (!user || !selectedMember) return;
     if (selectedMember === 'main') {
-      fetch(`http://localhost:5000/api/medicines?userId=${user.uid}`)
+      fetch(`${import.meta.env.VITE_API_URL}/api/medicines?userId=${user.uid}`)
         .then((res) => res.json())
         .then((data) => {
           setMedicines(data.filter((m) => !m.memberId));
@@ -138,13 +138,13 @@ export default function Dashboard({ user }) {
     try {
       if (selectedMember === 'main') {
         // Fetch medicines for main user (no memberId)
-        const res = await fetch(`http://localhost:5000/api/medicines?userId=${user.uid}`);
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/medicines?userId=${user.uid}`);
         const data = await res.json();
         setMedicines(data.filter((m) => !m.memberId));
       } else {
         // Fetch medicines for specific member
         const res = await fetch(
-          `http://localhost:5000/api/medicines?userId=${user.uid}&memberId=${selectedMember}`
+          `${import.meta.env.VITE_API_URL}/api/medicines?userId=${user.uid}&memberId=${selectedMember}`
         );
         const data = await res.json();
         setMedicines(data);
@@ -172,7 +172,7 @@ export default function Dashboard({ user }) {
       end.setDate(start.getDate() + form.durationDays);
       const endDate = end.toISOString().slice(0, 10);
       
-      await fetch("http://localhost:5000/api/medicines", {
+      await fetch("${import.meta.env.VITE_API_URL}/api/medicines", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -205,7 +205,7 @@ export default function Dashboard({ user }) {
   const handleAddMember = async (e) => {
     e.preventDefault();
     try {
-      await fetch("http://localhost:5000/api/members", {
+      await fetch("${import.meta.env.VITE_API_URL}/api/members", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -310,7 +310,7 @@ export default function Dashboard({ user }) {
           const checkMedicineLogs = async () => {
             try {
               const today = new Date();
-              const response = await fetch(`http://localhost:5000/api/medicineLogs?userId=${user.uid}&medicineId=${med._id}&date=${today.toDateString()}`);
+              const response = await fetch(`${import.meta.env.VITE_API_URL}/api/medicineLogs?userId=${user.uid}&medicineId=${med._id}&date=${today.toDateString()}`);
               const logs = await response.json();
               
               // Check if this medicine is marked as completed for today in localStorage
@@ -369,7 +369,7 @@ export default function Dashboard({ user }) {
       end.setDate(start.getDate() + totalDays);
       const endDate = end.toISOString().slice(0, 10);
       
-      const response = await fetch(`http://localhost:5000/api/medicines/${refillMedicine._id}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/medicines/${refillMedicine._id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ durationDays: totalDays, endDate })
@@ -419,7 +419,7 @@ export default function Dashboard({ user }) {
         };
 
         // Save to medicine logs
-        await fetch("http://localhost:5000/api/medicineLogs", {
+        await fetch("${import.meta.env.VITE_API_URL}/api/medicineLogs", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(logEntry)
@@ -436,7 +436,7 @@ export default function Dashboard({ user }) {
         }
       } else if (action === 'Cured') {
         try {
-          await fetch(`http://localhost:5000/api/medicines/${medicineId}`, {
+          await fetch(`${import.meta.env.VITE_API_URL}/api/medicines/${medicineId}`, {
             method: 'DELETE'
           });
           fetchMedicines();
@@ -483,7 +483,7 @@ export default function Dashboard({ user }) {
         const yesterday = new Date();
         yesterday.setDate(yesterday.getDate() - 1);
         
-        const response = await fetch(`http://localhost:5000/api/medicineLogs?userId=${user.uid}&from=${yesterday.toISOString()}`);
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/medicineLogs?userId=${user.uid}&from=${yesterday.toISOString()}`);
         const logs = await response.json();
         
         // Find medicines with reminders that haven't been logged
@@ -576,7 +576,7 @@ export default function Dashboard({ user }) {
             const checkMedicineLogs = async () => {
               try {
                 const today = new Date();
-                const response = await fetch(`http://localhost:5000/api/medicineLogs?userId=${user.uid}&medicineId=${med._id}&date=${today.toDateString()}`);
+                const response = await fetch(`${import.meta.env.VITE_API_URL}/api/medicineLogs?userId=${user.uid}&medicineId=${med._id}&date=${today.toDateString()}`);
                 const logs = await response.json();
                 
                 // Check if this medicine is marked as completed for today in localStorage

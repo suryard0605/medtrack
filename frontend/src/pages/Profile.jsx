@@ -53,7 +53,7 @@ export default function Profile({ user }) {
     if (!user) return;
 
     // Fetch main user profile (to get name)
-    fetch(`http://localhost:5000/api/users/${user.uid}`)
+    fetch(`${import.meta.env.VITE_API_URL}/api/users/${user.uid}`)
       .then((res) => res.json())
       .then((data) => {
         // ✅ Make sure we have a proper name for display
@@ -69,7 +69,7 @@ export default function Profile({ user }) {
       });
 
     // Fetch members
-    fetch(`http://localhost:5000/api/members/${user.uid}`)
+    fetch(`${import.meta.env.VITE_API_URL}/api/members/${user.uid}`)
       .then((res) => res.json())
       .then((data) => setMembers(data));
   }, [user]);
@@ -78,7 +78,7 @@ export default function Profile({ user }) {
   useEffect(() => {
     if (!selected) return;
 
-    let url = `http://localhost:5000/api/medicines?userId=${user.uid}`;
+    let url = `${import.meta.env.VITE_API_URL}/api/medicines?userId=${user.uid}`;
     if (!selected.isMainUser) {
       url += `&memberId=${selected._id}`;
     }
@@ -110,8 +110,8 @@ export default function Profile({ user }) {
   // ✅ Save profile
   const handleSave = async () => {
     const url = selected.isMainUser
-      ? `http://localhost:5000/api/users/${selected.uid}`
-      : `http://localhost:5000/api/members/${selected._id}`;
+      ? `${import.meta.env.VITE_API_URL}/api/users/${selected.uid}`
+      : `${import.meta.env.VITE_API_URL}/api/members/${selected._id}`;
 
     const res = await fetch(url, {
       method: "PUT",
@@ -139,7 +139,7 @@ export default function Profile({ user }) {
   const handleDeleteMedicine = async (id) => {
     if (!window.confirm("Delete this medicine?")) return;
 
-    const res = await fetch(`http://localhost:5000/api/medicines/${id}`, {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/api/medicines/${id}`, {
       method: "DELETE",
     });
 
@@ -162,7 +162,7 @@ export default function Profile({ user }) {
   // ✅ Save edited medicine
   const handleSaveMedicine = async () => {
     const res = await fetch(
-      `http://localhost:5000/api/medicines/${editingMedicine}`,
+      `${import.meta.env.VITE_API_URL}/api/medicines/${editingMedicine}`,
       {
         method: "PUT",
         headers: { "Content-Type": "application/json" },

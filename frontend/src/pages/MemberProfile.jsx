@@ -45,11 +45,11 @@ export default function MemberProfile({ user }) {
   useEffect(() => {
     if (!user) return;
 
-    fetch(`http://localhost:5000/api/members/single/${id}`)
+    fetch(`${import.meta.env.VITE_API_URL}/api/members/single/${id}`)
       .then((res) => res.json())
       .then((data) => setMember(data));
 
-    fetch(`http://localhost:5000/api/medicines/${user.uid}?memberId=${id}`)
+    fetch(`${import.meta.env.VITE_API_URL}/api/medicines/${user.uid}?memberId=${id}`)
       .then((res) => res.json())
       .then((data) => setMedicines(data));
   }, [id, user]);
@@ -57,13 +57,13 @@ export default function MemberProfile({ user }) {
   // Delete member
   const handleDelete = async () => {
     if (!window.confirm("Delete this member?")) return;
-    await fetch(`http://localhost:5000/api/members/${id}`, { method: "DELETE" });
+    await fetch(`${import.meta.env.VITE_API_URL}/api/members/${id}`, { method: "DELETE" });
     navigate("/profile");
   };
 
   // Save edited details
   const handleSave = async () => {
-    await fetch(`http://localhost:5000/api/members/${id}`, {
+    await fetch(`${import.meta.env.VITE_API_URL}/api/members/${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(member),

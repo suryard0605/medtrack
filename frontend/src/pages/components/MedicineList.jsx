@@ -90,7 +90,7 @@ export default function MedicineList({
       end.setDate(start.getDate() + totalDays);
       const endDate = end.toISOString().slice(0, 10);
       
-      const response = await fetch(`http://localhost:5000/api/medicines/${selectedMedicine._id}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/medicines/${selectedMedicine._id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ durationDays: totalDays, endDate })
@@ -112,7 +112,7 @@ export default function MedicineList({
 
   const handleDeleteSubmit = async () => {
     if (selectedMedicine) {
-      await fetch(`http://localhost:5000/api/medicines/${selectedMedicine._id}`, {
+      await fetch(`${import.meta.env.VITE_API_URL}/api/medicines/${selectedMedicine._id}`, {
         method: 'DELETE'
       });
       fetchMedicines();
@@ -206,7 +206,7 @@ export default function MedicineList({
                           <button
                             className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors flex items-center gap-2"
                             onClick={async () => {
-                              await fetch(`http://localhost:5000/api/medicines/${medicine._id}`, {
+                              await fetch(`${import.meta.env.VITE_API_URL}/api/medicines/${medicine._id}`, {
                                 method: 'PUT',
                                 headers: { 'Content-Type': 'application/json' },
                                 body: JSON.stringify(medicineForm)
