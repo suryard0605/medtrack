@@ -171,8 +171,8 @@ export default function Dashboard({ user }) {
       const end = new Date(start);
       end.setDate(start.getDate() + form.durationDays);
       const endDate = end.toISOString().slice(0, 10);
-      
-      await fetch("${import.meta.env.VITE_API_URL}/api/medicines", {
+
+      await fetch(`${import.meta.env.VITE_API_URL}/api/medicines`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -205,7 +205,7 @@ export default function Dashboard({ user }) {
   const handleAddMember = async (e) => {
     e.preventDefault();
     try {
-      await fetch("${import.meta.env.VITE_API_URL}/api/members", {
+      await fetch(`${import.meta.env.VITE_API_URL}/api/members`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -419,7 +419,7 @@ export default function Dashboard({ user }) {
         };
 
         // Save to medicine logs
-        await fetch("${import.meta.env.VITE_API_URL}/api/medicineLogs", {
+        await fetch(`${import.meta.env.VITE_API_URL}/api/medicineLogs`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(logEntry)
